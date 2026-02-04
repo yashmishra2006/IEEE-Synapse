@@ -2,22 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IEEE Synapse - Home</title>
+  <link rel="stylesheet" href="index.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    .home-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      margin-top: 100px;
+      padding: 2rem;
+    }
+
+    .success-card {
+      background: white;
+      padding: 3rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #00629b;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    p {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
     }
   </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span>⚡</span> IEEE Synapse
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link">Dashboard</a></li>
+        <li><a href="#" class="nav-link">Events</a></li>
+        <li><a href="#" class="nav-link">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <h1>Login Successful</h1>
-  <p>You are signed in with Google</p>
-
-  <button onclick="logout()">Logout</button>
+  <!-- Main Content -->
+  <div class="home-content">
+    <div class="success-card">
+      <h1>✓ Login Successful</h1>
+      <p>You are signed in with Google</p>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
 
   <script>
     function logout() {

@@ -788,16 +788,17 @@ const IdeScreen: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => setShowEventList(!showEventList)}
-              className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded transition-colors text-xs font-bold tracking-wide ${showEventList ? 'bg-primary text-white' : 'text-slate-400 hover:text-white bg-[#1a2630]'}`}
+              className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded transition-colors text-xs font-bold tracking-wide whitespace-nowrap ${showEventList ? 'bg-primary text-white' : 'text-slate-400 hover:text-white bg-[#1a2630]'}`}
               title="Register for Events"
             >
               <span className="material-symbols-outlined text-[18px]">app_registration</span>
-              <span className="hidden md:inline">REGISTER FOR EVENTS</span>
+              <span className="hidden sm:inline">REGISTER</span>
+              <span className="hidden md:inline ml-1">FOR EVENTS</span>
               <span className="material-symbols-outlined text-sm">{showEventList ? 'expand_less' : 'expand_more'}</span>
             </button>
 
             {showEventList && (
-              <div className="absolute top-full mt-2 right-0 w-64 sm:w-72 md:w-80 bg-[#1a262f] border border-[#2b3e4d] rounded-lg shadow-2xl py-2 z-[100] animate-fadeIn max-w-[calc(100vw-1rem)]">
+              <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 w-[calc(100vw-2rem)] sm:w-72 md:w-80 max-w-[320px] bg-[#1a262f] border border-[#2b3e4d] rounded-lg shadow-2xl py-2 z-[100] animate-fadeIn">
                 <div className="px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-[#2b3e4d] mb-1">Select Event</div>
                 <div className="max-h-[300px] sm:max-h-[400px] overflow-y-auto custom-scrollbar">
                   {availableEvents.length > 0 ? (

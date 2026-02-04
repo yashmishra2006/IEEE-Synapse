@@ -2,21 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Google Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IEEE Synapse - Sign In</title>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span>⚡</span> IEEE Synapse
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link">Home</a></li>
+        <li><a href="#" class="nav-link">Events</a></li>
+        <li><a href="#" class="nav-link">About</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <h2>User Sign In</h2>
-  <div id="user-signin"></div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="signin-section">
+      <h2>User Sign In</h2>
+      <div id="user-signin"></div>
+    </div>
 
-  <h2>Admin Sign In</h2>
-  <div id="admin-signin"></div>
+    <div class="signin-section">
+      <h2>Admin Sign In</h2>
+      <div id="admin-signin"></div>
+    </div>
 
-  <h2>Super-Admin Sign In</h2>
-  <div id="superadmin-signin"></div>
+    <div class="signin-section">
+      <h2>Super-Admin Sign In</h2>
+      <div id="superadmin-signin"></div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

@@ -104,7 +104,7 @@ const LaunchScreen: React.FC = () => {
   };
 
   return (
-    <div className="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden h-screen w-screen selection:bg-primary selection:text-white relative flex flex-col">
+    <div className="font-display text-white overflow-hidden h-screen w-screen selection:bg-primary selection:text-white relative flex flex-col" style={{ backgroundColor: 'rgb(2 6 23)' }}>
       {showRegisterForm && tempGoogleData && (
         <RegisterForm
           user={{ email: tempGoogleData.email, name: tempGoogleData.name }}
@@ -167,9 +167,9 @@ const LaunchScreen: React.FC = () => {
                 />
               </div>
             )}
-            <Link to="/ide" className="flex items-center gap-2 cursor-pointer justify-center overflow-hidden rounded-lg h-9 px-4 bg-primary hover:bg-primary/90 transition-all text-white text-sm font-bold shadow-[0_0_15px_rgba(5,121,199,0.5)] hover:shadow-[0_0_25px_rgba(5,121,199,0.7)] border border-primary/50">
+            <Link to="/ide" className="flex items-center gap-2 cursor-pointer justify-center overflow-hidden rounded-lg h-9 px-2 sm:px-4 bg-primary hover:bg-primary/90 transition-all text-white text-sm font-bold shadow-[0_0_15px_rgba(5,121,199,0.5)] hover:shadow-[0_0_25px_rgba(5,121,199,0.7)] border border-primary/50">
               <span className="material-symbols-outlined text-[18px]">terminal</span>
-              <span className="truncate">Launch Editor</span>
+              <span className="truncate hidden sm:inline">Launch Editor</span>
             </Link>
           </div>
         </header>
@@ -312,9 +312,9 @@ const LaunchScreen: React.FC = () => {
         </main>
 
         {/* Footer */}
-        <footer className="w-full border-t border-[#213a4a] bg-[#0f1b23] py-2 px-4 z-50">
+        <footer className="hidden sm:block w-full border-t border-[#213a4a] bg-[#0f1b23] py-2 px-4 z-50">
           <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row justify-between items-center text-[10px] sm:text-xs font-mono text-[#5b7a8c] gap-2">
-            <div className="flex items-center gap-6">
+            <div className="hidden sm:flex items-center gap-6">
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[12px] sm:text-[14px]">public</span>
                 IP: {userIP}
@@ -323,7 +323,7 @@ const LaunchScreen: React.FC = () => {
                 <span className="material-symbols-outlined text-[12px] sm:text-[14px] text-emerald-500">wifi</span>
                 ONLINE
               </span>
-              <span className="hidden sm:flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[12px] sm:text-[14px]">speed</span>
                 LATENCY: {latency !== null ? `${latency}ms` : '---ms'}
               </span>
