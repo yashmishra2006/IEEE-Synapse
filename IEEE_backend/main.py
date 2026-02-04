@@ -4,9 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from utils.reader import Frontend
 
 app = FastAPI()
+
+# Allow multiple origins (development and production)
+allowed_origins = [
+    Frontend,  # From .env
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://ieee-synapse.vercel.app"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[Frontend],  
+    allow_origins=allowed_origins,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
