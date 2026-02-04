@@ -9,6 +9,9 @@ const LaunchScreen: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [tempGoogleData, setTempGoogleData] = useState<any>(null);
+  const [userIP, setUserIP] = useState<string>('---.---.---.---');
+  const [latency, setLatency] = useState<number | null>(null);
+  const [currentDate, setCurrentDate] = useState<string>('');
 
   const fetchProfile = async () => {
     try {
@@ -32,6 +35,33 @@ const LaunchScreen: React.FC = () => {
     if (token) {
       fetchProfile();
     }
+
+    // Set current date
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    }).toUpperCase();
+    setCurrentDate(formattedDate);
+
+    // Fetch user IP and measure latency
+    const fetchNetworkInfo = async () => {
+      try {
+        const startTime = performance.now();
+        const response = await fetch('https://api.ipify.org?format=json');
+        const endTime = performance.now();
+        const data = await response.json();
+        
+        setUserIP(data.ip);
+        setLatency(Math.round(endTime - startTime));
+      } catch (error) {
+        console.error('Failed to fetch network info:', error);
+        setUserIP('Unknown');
+      }
+    };
+
+    fetchNetworkInfo();
   }, []);
 
   const handleLoginSuccess = async (credentialResponse: any) => {
@@ -63,6 +93,14 @@ const LaunchScreen: React.FC = () => {
     localStorage.removeItem('synapse_auth_token');
     setUser(null);
     setTempGoogleData(null);
+  };
+
+  const scrollToSchedule = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const scheduleElement = document.getElementById('schedule');
+    if (scheduleElement) {
+      scheduleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -99,12 +137,6 @@ const LaunchScreen: React.FC = () => {
               <p className="text-[10px] text-gray-400 font-mono leading-none tracking-widest uppercase opacity-70">v.2026.1.0-RC</p>
             </div>
           </div>
-          <nav className="hidden md:flex items-center gap-1 bg-[#15232d] p-1 rounded-lg border border-[#213a4a]">
-            <a className="text-gray-300 hover:text-white hover:bg-[#213a4a] px-4 py-1.5 rounded text-sm font-medium transition-colors" href="#">Home</a>
-            <a className="text-gray-300 hover:text-white hover:bg-[#213a4a] px-4 py-1.5 rounded text-sm font-medium transition-colors" href="#">Tracks</a>
-            <a className="text-gray-300 hover:text-white hover:bg-[#213a4a] px-4 py-1.5 rounded text-sm font-medium transition-colors" href="#">Rules</a>
-            <a className="text-gray-300 hover:text-white hover:bg-[#213a4a] px-4 py-1.5 rounded text-sm font-medium transition-colors" href="#">Sponsors</a>
-          </nav>
           <div className="flex items-center gap-4">
             {user ? (
               <div className="flex items-center gap-3">
@@ -143,7 +175,7 @@ const LaunchScreen: React.FC = () => {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col items-center justify-center px-4 relative">
+        <main className="flex-1 flex flex-col overflow-y-auto relative" style={{ scrollBehavior: 'smooth' }}>
           {/* Floating Code Fragments */}
           <div className="absolute top-20 left-10 opacity-10 hidden lg:block font-mono text-xs text-primary select-none pointer-events-none">
             <p>function initSynapse() {'{'}</p>
@@ -157,15 +189,11 @@ const LaunchScreen: React.FC = () => {
             <p>await loadModules(['algo', 'dev']);</p>
           </div>
 
-          <div className="layout-content-container flex flex-col items-center max-w-[960px] w-full z-20">
-            <div className="flex flex-col gap-6 items-center justify-center p-4 text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm mb-4">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                <span className="text-xs font-mono text-primary tracking-wide uppercase">Registrations Open</span>
-              </div>
+          {/* Hero Section - Centered */}
+          <div className="min-h-screen flex items-center justify-center px-4">
+            <div className="layout-content-container flex flex-col items-center max-w-[960px] w-full z-20 -translate-y-16">
+              <div className="flex flex-col gap-6 items-center justify-center p-4 text-center">
+
               <div className="flex flex-col gap-1 text-center relative">
                 <h1 className="glitch-text text-white text-6xl md:text-8xl lg:text-9xl font-black leading-none tracking-tighter" data-text="SYNAPSE">
                   SYNAPSE
@@ -177,7 +205,7 @@ const LaunchScreen: React.FC = () => {
                 </div>
               </div>
               <h2 className="text-gray-400 font-mono text-sm md:text-base lg:text-lg max-w-xl mt-4">
-                <span className="text-primary mr-2">&gt;</span>IEEE’s Flagship Coding Week<span className="animate-pulse">_</span>
+                <span className="text-primary mr-2">&gt;</span>IEEE’s Flagship Week<span className="animate-pulse">_</span>
               </h2>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center w-full justify-center">
@@ -192,14 +220,17 @@ const LaunchScreen: React.FC = () => {
                   <span className="relative text-lg font-bold tracking-wide mr-2">INITIALIZE IDE</span>
                   <span className="material-symbols-outlined relative group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </Link>
-                <a href="#schedule" className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-14 px-6 border border-[#213a4a] bg-[#15232d]/50 hover:bg-[#213a4a] text-gray-300 hover:text-white font-medium transition-colors backdrop-blur-sm">
+                <a href="#schedule" onClick={scrollToSchedule} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-lg h-14 px-6 border border-[#213a4a] bg-[#15232d]/50 hover:bg-[#213a4a] text-gray-300 hover:text-white font-medium transition-colors backdrop-blur-sm">
                   <span className="text-sm tracking-wide">VIEW SCHEDULE</span>
                 </a>
               </div>
             </div>
+            </div>
+          </div>
 
-            {/* Schedule Section */}
-            <section id="schedule" className="w-full mt-32 mb-20 px-4">
+          {/* Schedule Section */}
+          <div className="w-full max-w-[1400px] mx-auto px-4">
+            <section id="schedule" className="w-full py-20">
               <div className="flex flex-col gap-2 mb-12">
                 <h3 className="text-primary font-mono text-sm tracking-[0.3em] uppercase">Timeline</h3>
                 <h2 className="text-white text-4xl font-bold">Event Schedule 2026</h2>
@@ -285,8 +316,8 @@ const LaunchScreen: React.FC = () => {
           <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row justify-between items-center text-[10px] sm:text-xs font-mono text-[#5b7a8c] gap-2">
             <div className="flex items-center gap-6">
               <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[12px] sm:text-[14px]">dns</span>
-                SERVER: US-EAST-1
+                <span className="material-symbols-outlined text-[12px] sm:text-[14px]">public</span>
+                IP: {userIP}
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[12px] sm:text-[14px] text-emerald-500">wifi</span>
@@ -294,13 +325,13 @@ const LaunchScreen: React.FC = () => {
               </span>
               <span className="hidden sm:flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[12px] sm:text-[14px]">speed</span>
-                LATENCY: 24ms
+                LATENCY: {latency !== null ? `${latency}ms` : '---ms'}
               </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="opacity-50">© IEEE 2026</span>
               <span className="hidden sm:inline-block w-[1px] h-3 bg-[#213a4a]"></span>
-              <span className="hidden sm:inline-block">OCT 12-14, 2026</span>
+              <span className="hidden sm:inline-block">{currentDate || 'LOADING...'}</span>
             </div>
           </div>
         </footer>
