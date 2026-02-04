@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+    --color-primary: #0579c7;
+    --color-background-light: #f5f7f8;
+    --color-background-dark: #0f1b23;
+    --color-editor-bg: #131f28;
+    --color-sidebar-bg: #0b141a;
+    --color-panel-bg: #0e181e;
+    --color-accent-green: #00e676;
+    --color-code-keyword: #c678dd;
+    --color-code-function: #61afef;
+    --color-code-string: #98c379;
+    --color-code-comment: #5c6370;
+    --color-code-class: #e5c07b;
+
+    --font-display: "Space Grotesk", sans-serif;
+    --font-mono: "Fira Code", "Space Mono", monospace;
+
+    --animate-glitch: glitch 1s linear infinite;
+    --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-fadeIn: fadeIn 0.1s ease-out;
+
+    @keyframes glitch {
+
+        2%,
+        64% {
+            transform: translate(2px, 0) skew(0deg);
+        }
+
+        4%,
+        60% {
+            transform: translate(-2px, 0) skew(0deg);
+        }
+
+        62% {
+            transform: translate(0, 0) skew(5deg);
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes scaleIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes progressBar {
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%;
+        }
+    }
+}
+
+/* Custom styles from index.html */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #0f1b23;
+}
+
+/* Scanline */
+.scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(5, 121, 199, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 10s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% {
+        bottom: 100%;
+    }
+
+    100% {
+        bottom: -100px;
+    }
+}
+
+/* Grid Pattern */
+.bg-grid-pattern {
+    background-image: linear-gradient(to right, #213a4a 1px, transparent 1px),
+        linear-gradient(to bottom, #213a4a 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+}
+
+/* Glitch Text */
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 #ff00c1;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 #00fff9;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(22px, 9999px, 12px, 0);
+    }
+
+    5% {
+        clip: rect(65px, 9999px, 89px, 0);
+    }
+
+    10% {
+        clip: rect(89px, 9999px, 2px, 0);
+    }
+
+    15% {
+        clip: rect(12px, 9999px, 34px, 0);
+    }
+
+    20% {
+        clip: rect(67px, 9999px, 4px, 0);
+    }
+
+    25% {
+        clip: rect(1px, 9999px, 100px, 0);
+    }
+
+    30% {
+        clip: rect(45px, 9999px, 67px, 0);
+    }
+
+    100% {
+        clip: rect(12px, 9999px, 78px, 0);
+    }
+}
+
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 100px, 0);
+    }
+
+    5% {
+        clip: rect(5px, 9999px, 24px, 0);
+    }
+
+    10% {
+        clip: rect(23px, 9999px, 6px, 0);
+    }
+
+    15% {
+        clip: rect(98px, 9999px, 12px, 0);
+    }
+
+    20% {
+        clip: rect(2px, 9999px, 86px, 0);
+    }
+
+    25% {
+        clip: rect(76px, 9999px, 43px, 0);
+    }
+
+    30% {
+        clip: rect(32px, 9999px, 1px, 0);
+    }
+
+    100% {
+        clip: rect(54px, 9999px, 44px, 0);
+    }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2b3e4d;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a5265;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.cursor-blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
