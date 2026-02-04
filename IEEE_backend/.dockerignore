@@ -1,0 +1,51 @@
+# Docker ignore file for IEEE Backend
+# Ignore virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Ignore environment variables
+.env
+.env.local
+.env.*.local
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore logs
+*.log
+
+# Ignore pytest cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Ignore local development files
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore docker files in build
+Dockerfile
+docker-compose.yml
+.dockerignore

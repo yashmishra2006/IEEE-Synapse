@@ -1,0 +1,439 @@
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import StreamingResponse
+from datetime import datetime
+from database import client,current_fs_collection, current_user_collection, current_event_collection, current_team_collection
+from schemas.user import UserCreate
+from utils.time import IST
+from verify.token import verify_access_token
+from verify.user import verify_user_payload
+from verify.event import verify_event, verify_eventRegistry, verify_can_register
+from verify.team import verify_team_by_id, verify_in_team
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from utils.pattern import DB_PATTERN, verify_session_db
+from bson import ObjectId
+from gridfs import GridFS
+
+
+security = HTTPBearer()
+
+router = APIRouter(prefix="/users", tags=["Users"])
+
+
+
+
+@router.patch("/register")
+def signup_user(
+    user_data: UserCreate,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+    ):
+
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id ,email = verify_user_payload(payload)
+    if len(user)>4:
+        raise HTTPException(status_code=404, detail="User Already Registered")
+
+    
+    
+    update_data = user_data.model_dump(mode="json")
+    update_data["registered_event"] = []
+
+    if email != update_data["email"].lower():
+        raise HTTPException(status_code=404, detail="Email Mismatch found")
+
+    # Remove empty github_profile and linkedin_profile
+    if not update_data.get("github_profile"):
+        update_data.pop("github_profile", None)
+    if not update_data.get("linkedin_profile"):
+        update_data.pop("linkedin_profile", None)
+
+    user_collection = current_user_collection()
+    user_collection.update_one(
+        {"_id": user_id},
+        {"$set": update_data}
+    )
+
+    return {"message": "User registered successfully"}
+
+
+
+
+
+
+
+
+
+
+
+@router.patch("/change-details")
+def signup_user(
+    user_data: UserCreate,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+    ):
+
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id ,email = verify_user_payload(payload)
+    
+    
+    update_data = user_data.model_dump(mode="json")
+
+    if email != update_data["email"].lower():
+        raise HTTPException(status_code=404, detail="Email Mismatch found")
+
+    user_collection = current_user_collection()
+    user_collection.update_one(
+        {"_id": user_id},
+        {"$set": update_data}
+    )
+
+    return {"message": "User details changed successfully"}
+
+
+
+
+@router.patch("/register-event")
+def register_event(
+    event_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+    ):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id , email = verify_user_payload(payload)
+    event,event_id = verify_event(event_id)
+
+    timestamp = datetime.now(IST).isoformat()
+
+
+    verify_eventRegistry(event_id, user_id, "N", user, event)
+    verify_can_register(event)
+        
+    user_collection = current_user_collection()
+    user_collection.update_one(
+        {"_id": user_id},
+        {"$push": {"registered_event": {"event_id": event_id,"registered_on": timestamp}}}
+    )
+        
+    event_collection = current_event_collection()
+    event_collection.update_one(
+        {"_id": event_id},
+        {"$push": {"registered_user": user_id}}
+    )
+
+
+    return {"message": "Event registered successfully"}
+
+
+
+
+
+@router.delete("/unregister-event")
+def unregister_event(
+    event_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user, user_id, email = verify_user_payload(payload)
+    event, event_id = verify_event(event_id)
+
+    verify_eventRegistry(event_id, user_id, "Y", user, event)
+
+    user_collection = current_user_collection()
+    user_collection.update_one(
+        {"_id": user_id},
+        {"$pull": {"registered_event": {"event_id": event_id}}}
+    )
+
+    event_collection = current_event_collection()
+    event_collection.update_one(
+        {"_id": event_id},
+        {"$pull": {"registered_user": user_id}}
+    )
+
+    return {"message": "Event unregistered successfully"}
+
+
+
+
+
+@router.get("/profile")
+def get_user_details(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id ,email = verify_user_payload(payload)
+
+    user.pop("_id", None)
+    user.pop("registered_event", None)
+    user.pop("created_on",None)
+
+    return {
+        "success": True,
+        "data": user
+    }
+
+
+@router.get("/registered")
+def get_registered_events_teams(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id ,email = verify_user_payload(payload)
+
+    event_collection = current_event_collection()
+    event = event_collection.find(
+        {},
+        {"_id":1,
+         "event_name":1})
+    
+    team_collection = current_team_collection()
+    team = team_collection.find(
+        {},
+        {"_id":1,
+         "team_name":1,
+         "registered_on":1,
+         "leader_id":1})
+    
+    event_map = {
+        str(e["_id"]): e["event_name"]
+        for e in event
+    }
+
+    team_map = {
+        str(t["_id"]): {
+            "team_name": t["team_name"],
+            "team_created_on": t.get("registered_on"),
+            "leader_id": t.get("leader_id")
+        }
+        for t in team
+    }
+
+    result = []
+
+    for reg in user.get("registered_event", []):
+        event_id = str(reg["event_id"])
+        team_id = str(reg.get("team_id")) if reg.get("team_id") else None
+        if team_id:
+            if user_id == team_map.get(team_id,{}).get("leader_id"):
+                role = "leader"
+            else:
+                role = "member"
+        else:
+            role=None
+
+
+        result.append({
+            "event_id": event_id,
+            "event_name": event_map.get(event_id),
+            "registered_for_event_on": reg.get("registered_on"),
+            "team_id": team_id,
+            "team_name": team_map.get(team_id, {}).get("team_name"),
+            "team_created_on": team_map.get(team_id, {}).get("team_created_on"),
+            "role":role
+        })
+
+    return {"registered_event": result}
+
+    
+@router.get("/event")
+def get_registered_event(
+    event_id:str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id ,email = verify_user_payload(payload)
+    event,event_id = verify_event(event_id)
+    verify_eventRegistry(event_id, user_id, "Y", user, event)
+
+    event.pop("_id", None)
+    event.pop("registered_user", None)
+    event.pop("registered_team", None)
+    event.pop("remark", None)
+    event.pop("remarked_user",None)
+    event.pop("remarked_team",None)
+    event.pop("created_on", None)
+    event["event_thumbnail_id"] = str(event.get("event_thumbnail_id"))
+
+    return {
+        "success": True,
+        "data": event
+    }
+
+
+
+@router.get("/team")
+def get_team(
+    team_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id, email = verify_user_payload(payload)
+    team,team_id = verify_team_by_id(team_id)
+    verify_in_team(team, user_id)
+
+
+    event_collection = current_event_collection()
+    event = event_collection.find_one(
+        {"_id": team["event_id"]},
+        {"event_name": 1}
+    )
+
+    user_collection = current_user_collection()
+    leader = user_collection.find_one(
+        {"_id": team["leader_id"]},
+        {"name": 1, "email": 1}
+    )
+
+    members_cursor = user_collection.find(
+        {"_id": {"$in": team.get("members", [])}},
+        {"name": 1, "email": 1}
+    )
+
+    members = [
+        {
+            "name": member["name"],
+            "email": member["email"]
+        }
+        for member in members_cursor
+    ]
+
+    data = {
+        "team_code": team.get("team_code"),
+        "team_name": team["team_name"],
+        "event_name": event["event_name"],
+        "leader_name": leader["name"],
+        "leader_email": leader["email"],
+        "team_created_on": team["registered_on"],
+        "members": members
+    }
+
+    return {
+        "success": True,
+        "data": data
+    }
+
+
+@router.get("/events")
+def get_this_session_events(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id, email = verify_user_payload(payload)
+
+    event_collection = current_event_collection()
+    events_cursor = event_collection.find(
+        {},
+        {
+            "registered_user": 0,
+            "registered_team": 0,
+            "remark": 0,
+            "remarked_user":0,
+            "remarked_team":0,
+            "created_on":0
+        }
+    )
+
+    events = []
+    for event in events_cursor:
+        event["_id"] = str(event["_id"])
+        event["event_thumbnail_id"] = str(event.get("event_thumbnail_id",None))
+        events.append(event)
+
+    return {
+        "success": True,
+        "data": events
+    }
+
+
+@router.get("/archive")
+def get_all_archieved_events(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user,user_id, email = verify_user_payload(payload)
+
+    db_names = client.list_database_names()
+
+    archive_data={}
+    for db_name in db_names:
+        if not DB_PATTERN.match(db_name):
+            continue
+
+        db = client[db_name]
+        event_collection = db["event"]
+
+        events_cursor = event_collection.find(
+            {},
+            {
+                "registered_user": 0,
+                "registered_team": 0,
+                "remark": 0,
+                "remarked_user":0,
+                "remarked_team":0,
+                "created_on":0
+            }
+        )
+
+        events = []
+        for event in events_cursor:
+            event["_id"] = str(event["_id"])
+            event["event_thumbnail_id"] = str(event.get("event_thumbnail_id",None))
+
+            events.append(event)
+
+        archive_data[db_name] = events
+
+    return {
+        "success": True,
+        "data": archive_data
+    }
+
+
+@router.get("/image/{image_id}")
+def get_image_current_year(
+    image_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user, user_id, email = verify_user_payload(payload)
+
+    fs = current_fs_collection()
+    try:
+        grid_out = fs.get(ObjectId(image_id))
+    except Exception:
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    return StreamingResponse(
+        grid_out,
+        media_type=grid_out.content_type or "image/jpeg"
+    )
+
+
+@router.get("/image/{year}/{image_id}")
+def get_image_from_archive(
+    year: str,
+    image_id: str,
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    payload = verify_access_token(token)
+    user, user_id, email = verify_user_payload(payload)
+
+    year = verify_session_db(year)
+
+    archive_db = client[year]
+    fs = GridFS(archive_db)
+
+    try:
+        grid_out = fs.get(ObjectId(image_id))
+    except Exception:
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    return StreamingResponse(
+        grid_out,
+        media_type=grid_out.content_type or "image/jpeg"
+    )
+

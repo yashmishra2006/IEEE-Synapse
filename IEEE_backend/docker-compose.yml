@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: synapse-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    volumes:
+      - ./client_secret_1072432556660-2vk5bnc83c8bhb8bi2vqihd7da668dp9.apps.googleusercontent.com.json:/app/client_secret_1072432556660-2vk5bnc83c8bhb8bi2vqihd7da668dp9.apps.googleusercontent.com.json:ro
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - synapse-network
+
+  # Optional: Add MongoDB if not using external service
+  # mongodb:
+  #   image: mongo:7.0
+  #   container_name: synapse-mongodb
+  #   ports:
+  #     - "27017:27017"
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+  #   volumes:
+  #     - mongodb-data:/data/db
+  #   restart: unless-stopped
+  #   networks:
+  #     - synapse-network
+
+networks:
+  synapse-network:
+    driver: bridge
+
+# volumes:
+#   mongodb-data:
