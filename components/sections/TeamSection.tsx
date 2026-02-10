@@ -71,7 +71,7 @@ const MemberCard = ({ member, i }: { member: any, i: number, key?: any }) => (
             <img
                 src={member.image}
                 alt={member.name}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
+                className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
             />
         </div>
         <h4 className="text-xl font-bold text-center mb-1 group-hover:text-primary transition-colors">{member.name}</h4>
