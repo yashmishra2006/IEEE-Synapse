@@ -23,6 +23,7 @@
     --animate-glitch: glitch 1s linear infinite;
     --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     --animate-fadeIn: fadeIn 0.1s ease-out;
+    --animate-spotlight: spotlight 2s ease .75s 1 forwards;
 
     @keyframes glitch {
 
@@ -74,14 +75,27 @@
             width: 100%;
         }
     }
+
+    @keyframes spotlight {
+        0% {
+            opacity: 0;
+            transform: translate(-72%, -62%) scale(0.5);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translate(-50%, -40%) scale(1);
+        }
+    }
 }
 
 /* Custom styles from index.html */
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: #0f1b23;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #000000;
 }
 
 /* Scanline */
@@ -251,5 +265,32 @@ body {
 @keyframes blink {
     50% {
         opacity: 0;
+    }
+}
+
+.shiny-text {
+    color: #b5b5b5a4;
+    background: linear-gradient(120deg,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(255, 255, 255, 0) 60%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    display: inline-block;
+    animation: shiny 5s linear infinite;
+}
+
+.shiny-text.disabled {
+    animation: none;
+}
+
+@keyframes shiny {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
     }
 }

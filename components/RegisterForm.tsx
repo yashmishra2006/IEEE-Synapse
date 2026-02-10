@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { UserRegistration } from '../types/api';
 import { userService } from '../services/userService';
+import { motion } from 'framer-motion';
+import { X, User, Phone, GraduationCap, Github, Linkedin, CheckCircle2, AlertCircle } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 interface RegisterFormProps {
     onSuccess: () => void;
@@ -37,6 +40,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onCancel, user }
             }));
         }
     }, [user]);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -56,12 +60,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onCancel, user }
         setError(null);
 
         if (formData.github_profile && !validateUrl(formData.github_profile)) {
-            setError('Please enter a valid GitHub profile URL (e.g. https://github.com/username)');
+            setError('Please enter a valid GitHub profile URL');
             setLoading(false);
             return;
         }
         if (formData.linkedin_profile && !validateUrl(formData.linkedin_profile)) {
-            setError('Please enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/username)');
+            setError('Please enter a valid LinkedIn profile URL');
             setLoading(false);
             return;
         }
@@ -69,7 +73,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onCancel, user }
         try {
             await userService.register({
                 ...formData,
-                email: formData.email || user?.email // Ensure email is sent even if state update lagged
+                email: formData.email || user?.email
             });
             onSuccess();
         } catch (err: any) {
@@ -88,105 +92,127 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onCancel, user }
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn overflow-y-auto">
-            <div className="bg-background-dark border border-[#213a4a] rounded-lg w-full max-w-md overflow-hidden shadow-2xl my-4 sm:my-8">
-                <div className="bg-primary/10 border-b border-[#213a4a] px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
-                    <div>
-                        <h2 className="text-white font-bold text-base sm:text-lg">Complete Registration</h2>
-                        <p className="text-slate-400 text-[9px] sm:text-[10px] mt-0.5 uppercase tracking-widest font-mono">Join Synapse 2026</p>
-                    </div>
-                    <button onClick={onCancel} className="text-slate-400 hover:text-white transition-colors">
-                        <span className="material-symbols-outlined">close</span>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl overflow-y-auto selection:bg-primary/30">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                className="bg-[#050505] border border-white/10 rounded-[2rem] w-full max-w-xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] my-8"
+            >
+                <div className="relative px-8 py-10 border-b border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
+                    <button
+                        onClick={onCancel}
+                        className="absolute top-8 right-8 text-white/40 hover:text-white transition-colors"
+                    >
+                        <X className="h-6 w-6" />
                     </button>
+
+                    <h2 className="text-3xl font-bold text-white mb-2">Initialize Profile</h2>
+                    <p className="text-white/40 text-sm font-light tracking-wide">Complete your synchronization with Synapse 2026.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-3 sm:p-4 space-y-3 max-h-[70vh] overflow-y-auto">
+                <form onSubmit={handleSubmit} className="p-8 space-y-8">
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs p-3 rounded flex items-center gap-2">
-                            <span className="material-symbols-outlined text-sm">error</span>
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs p-4 rounded-xl flex items-center gap-3"
+                        >
+                            <AlertCircle className="h-4 w-4 shrink-0" />
                             {error}
-                        </div>
+                        </motion.div>
                     )}
 
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
-                        <input
-                            disabled
-                            value={user?.email || formData.email}
-                            className="w-full bg-[#1a262f] border border-[#213a4a] rounded-lg px-4 py-2 text-slate-400 text-sm cursor-not-allowed opacity-70"
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Full Name</label>
-                            <input
-                                required
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                                placeholder="John Doe"
-                            />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Email Address</label>
+                            <div className="relative">
+                                <input
+                                    disabled
+                                    value={user?.email || formData.email}
+                                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-5 py-4 text-white/30 text-sm cursor-not-allowed"
+                                />
+                                <CheckCircle2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-500/50" />
+                            </div>
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Phone Number</label>
-                            <input
-                                required
-                                name="phone_number"
-                                value={formData.phone_number}
-                                onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                                placeholder="+91 9876543210"
-                            />
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Full Name</label>
+                            <div className="relative">
+                                <input
+                                    required
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                    placeholder="John Doe"
+                                />
+                                <User className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">College / University</label>
-                        <input
-                            required
-                            name="college_or_university"
-                            value={formData.college_or_university}
-                            onChange={handleChange}
-                            className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                            placeholder="Your University Name"
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Phone Number</label>
+                            <div className="relative">
+                                <input
+                                    required
+                                    name="phone_number"
+                                    value={formData.phone_number}
+                                    onChange={handleChange}
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                    placeholder="+91 9876543210"
+                                />
+                                <Phone className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                            </div>
+                        </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Course</label>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">College / University</label>
+                            <div className="relative">
+                                <input
+                                    required
+                                    name="college_or_university"
+                                    value={formData.college_or_university}
+                                    onChange={handleChange}
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                    placeholder="Your University"
+                                />
+                                <GraduationCap className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Course</label>
                             <input
                                 required
                                 name="course"
                                 value={formData.course}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                                placeholder="B.Tech CS"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                placeholder="e.g. B.Tech CSE"
                             />
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Year</label>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Year of Study</label>
                             <select
                                 name="year"
                                 value={formData.year}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors appearance-none"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all appearance-none"
                             >
-                                <option value={1}>1st Year</option>
-                                <option value={2}>2nd Year</option>
-                                <option value={3}>3rd Year</option>
-                                <option value={4}>4th Year</option>
+                                <option value={1} className="bg-black">1st Year</option>
+                                <option value={2} className="bg-black">2nd Year</option>
+                                <option value={3} className="bg-black">3rd Year</option>
+                                <option value={4} className="bg-black">4th Year</option>
                             </select>
                         </div>
                     </div>
 
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Gender</label>
+                    <div className="space-y-4">
+                        <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">Gender Identification</label>
                         <div className="flex gap-4">
                             {['M', 'F', 'O'].map((g) => (
-                                <label key={g} className="flex items-center gap-2 cursor-pointer group">
+                                <label key={g} className="flex-1">
                                     <input
                                         type="radio"
                                         name="gender"
@@ -195,63 +221,73 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onCancel, user }
                                         onChange={handleChange}
                                         className="hidden"
                                     />
-                                    <div className={`size-4 rounded-full border-2 flex items-center justify-center transition-colors ${formData.gender === g ? 'border-primary bg-primary/20' : 'border-[#213a4a] group-hover:border-slate-500'}`}>
-                                        {formData.gender === g && <div className="size-1.5 rounded-full bg-primary" />}
+                                    <div className={cn(
+                                        "px-4 py-3 rounded-xl border text-center text-xs font-bold transition-all cursor-pointer",
+                                        formData.gender === g
+                                            ? "bg-white text-black border-white"
+                                            : "bg-white/[0.02] border-white/5 text-white/40 hover:border-white/20"
+                                    )}>
+                                        {g === 'M' ? 'Male' : g === 'F' ? 'Female' : 'Other'}
                                     </div>
-                                    <span className="text-sm text-slate-300">{g === 'M' ? 'Male' : g === 'F' ? 'Female' : 'Other'}</span>
                                 </label>
                             ))}
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">GitHub (Optional)</label>
-                            <input
-                                name="github_profile"
-                                value={formData.github_profile}
-                                onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                                placeholder="https://github.com/..."
-                            />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">GitHub Profile</label>
+                            <div className="relative">
+                                <input
+                                    name="github_profile"
+                                    value={formData.github_profile}
+                                    onChange={handleChange}
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                    placeholder="https://github.com/..."
+                                />
+                                <Github className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                            </div>
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">LinkedIn (Optional)</label>
-                            <input
-                                name="linkedin_profile"
-                                value={formData.linkedin_profile}
-                                onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
-                                placeholder="https://linkedin.com/in/..."
-                            />
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1">LinkedIn Profile</label>
+                            <div className="relative">
+                                <input
+                                    name="linkedin_profile"
+                                    value={formData.linkedin_profile}
+                                    onChange={handleChange}
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-white text-sm focus:border-primary/50 focus:bg-white/[0.05] outline-none transition-all"
+                                    placeholder="https://linkedin.com/..."
+                                />
+                                <Linkedin className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="pt-4 flex gap-3">
+                    <div className="pt-8 flex gap-4">
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="flex-1 px-6 py-2.5 rounded-lg border border-[#213a4a] text-slate-400 font-bold text-sm hover:bg-slate-800 hover:text-white transition-colors"
+                            className="flex-1 px-8 py-4 rounded-2xl border border-white/10 text-white/60 font-bold text-sm hover:bg-white/5 hover:text-white transition-all"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg px-6 py-2.5 shadow-[0_0_20px_rgba(5,121,199,0.3)] transition-all flex items-center justify-center gap-2"
+                            className="flex-[2] bg-primary text-white font-bold text-sm rounded-2xl px-8 py-4 shadow-[0_10px_30px_rgba(5,121,199,0.3)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-3"
                         >
                             {loading ? (
                                 <>
-                                    <span className="animate-spin material-symbols-outlined text-sm">progress_activity</span>
-                                    Registering...
+                                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span>Syncing...</span>
                                 </>
                             ) : (
-                                'Complete Signup'
+                                <span>Complete Registration</span>
                             )}
                         </button>
                     </div>
                 </form>
-            </div>
+            </motion.div>
         </div>
     );
 };
