@@ -136,20 +136,5 @@ export const EVENTS: Event[] = [
         prizes: "1st: Rs. 1,500, 2nd: Rs. 1,000, 3rd: Rs. 500",
         participants: 60,
         remarks: "Paper trading simulation"
-    },
-    {
-        id: 14,
-        name: "Closing Ceremony",
-        date: "27 Feb",
-        venue: "E Block Seminar Hall",
-        participants: 100,
-        remarks: "Session by IEEE mentors"
-    },
-    {
-        id: 15,
-        name: "Printables & Merch",
-        date: "—",
-        venue: "—",
-        remarks: "Event branding materials"
     }
 ];

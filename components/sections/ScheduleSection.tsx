@@ -49,7 +49,6 @@ const scheduleData = [
         events: [
             { name: "Treasure Hunt", venue: "TnP", prize: "Prize: Rs. 2,000", icon: "map" },
             { name: "Stock Trading", venue: "TnP", prize: "Prizes: Rs. 3,000", icon: "trending-up" },
-            { name: "Closing Ceremony", venue: "E-Block", prize: "IEEE Mentors", icon: "award" },
         ]
     }
 ];

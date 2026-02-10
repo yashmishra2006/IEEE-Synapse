@@ -128,7 +128,7 @@ const LaunchScreen: React.FC = () => {
         <header className="flex h-16 items-center justify-between gap-4 w-full max-w-6xl px-6 md:px-10 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <div className="flex items-center gap-4 shrink-0">
             <div className="flex flex-col">
-              <h1 className="text-lg font-black tracking-tighter uppercase leading-none">IEEE USICT</h1>
+              <h1 className="text-lg font-black tracking-tighter uppercase leading-none">IEEE GGSIPU</h1>
               <p className="text-[8px] font-mono text-primary tracking-[0.2em] uppercase mt-0.5">Synapse 2026</p>
             </div>
           </div>
@@ -258,7 +258,7 @@ const LaunchScreen: React.FC = () => {
 
             <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto mb-16 font-light leading-relaxed">
               Experience the convergence of technology, creativity, and competition.
-              Five days of high-stakes innovation at <span className="text-white font-medium">IEEE USICT</span>.
+              Five days of high-stakes innovation at <span className="text-white font-medium">IEEE GGSIPU</span>.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -303,7 +303,7 @@ const LaunchScreen: React.FC = () => {
                 <h2 className="text-2xl font-black tracking-tighter uppercase">IEEE Synapse</h2>
               </div>
               <p className="text-white/40 text-sm max-w-sm font-light leading-relaxed">
-                The annual tech-fest of IEEE USICT. Bringing together the brightest minds to innovate, collaborate, and transcend.
+                The annual tech-fest of IEEE GGSIPU. Bringing together the brightest minds to innovate, collaborate, and transcend.
               </p>
             </div>
             <div>
@@ -328,7 +328,7 @@ const LaunchScreen: React.FC = () => {
 
           <div className="flex flex-col md:flex-row items-center justify-between pt-12 border-t border-white/5 gap-8">
             <div className="flex items-center gap-8 text-[10px] font-mono text-white/20 uppercase tracking-widest">
-              <span>© 2026 IEEE USICT</span>
+              <span>© 2026 IEEE GGSIPU</span>
               <span className="flex items-center gap-2">
                 <Globe className="h-3 w-3" />
                 IP: {userIP}
