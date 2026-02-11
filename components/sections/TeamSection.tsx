@@ -7,8 +7,18 @@ const chairperson = {
     name: "Shri Yash Ji",
     role: "Chairperson, IEEE",
     image: "image.png",
-    hoverImage: "arkin.png",
 };
+
+const orbitImages = [
+    "riya.jpeg",
+    "khwaish.jpeg",
+    "mischa.jpeg",
+    "ridhima.jpeg",
+    "yash.jpg",
+    "arkin.png",
+    "khushi1.jpeg",
+    "lipika.png",
+];
 
 const orbitPositions = [
     { x: 0, y: -190 },
@@ -176,8 +186,8 @@ export const TeamSection: React.FC = () => {
                                         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-2xl overflow-hidden border border-primary/30 bg-white/5 shadow-[0_0_30px_rgba(59,130,246,0.25)] pointer-events-none z-20"
                                     >
                                         <img
-                                            src={chairperson.hoverImage}
-                                            alt="Arkin Kansra"
+                                            src={orbitImages[idx]}
+                                            alt="Team Member"
                                             className="w-full h-full object-cover"
                                         />
                                     </motion.div>
