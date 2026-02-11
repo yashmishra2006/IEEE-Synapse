@@ -253,6 +253,7 @@ const LaunchScreen: React.FC = () => {
                 text="SYNAPSE 11.0"
                 animateOn="view"
                 className="inline-block"
+                style={{ fontFamily: "'Inter', sans-serif", fontFeatureSettings: '"cv01" on, "cv02" on, "cv05" on' }}
               />
             </h1>
 
@@ -300,7 +301,7 @@ const LaunchScreen: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <h2 className="text-2xl font-black tracking-tighter uppercase">IEEE Synapse 11.0</h2>
+                <h2 className="text-2xl font-black tracking-tighter uppercase" style={{ fontFamily: "'Inter', sans-serif", fontFeatureSettings: '"cv01" on' }}>IEEE Synapse 11.0</h2>
               </div>
               <p className="text-white/40 text-sm max-w-sm font-light leading-relaxed">
                 The annual tech-fest of IEEE GGSIPU. Bringing together the brightest minds to innovate, collaborate, and transcend.

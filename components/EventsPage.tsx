@@ -138,11 +138,19 @@ const EventsPage: React.FC = () => {
                         <motion.h2
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="text-5xl md:text-7xl font-black tracking-tighter mb-8"
+                            className="text-5xl md:text-7xl font-black tracking-tighter mb-4"
                         >
                             EXPLORE THE<br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">MULTIVERSE</span>
                         </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-xl md:text-2xl font-bold text-white/60 mb-8 uppercase tracking-widest"
+                        >
+                            Total Prize Pool: <span className="text-primary italic">Rs. 80,000+</span>
+                        </motion.p>
 
                         <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
                             <div className="relative w-full md:w-96">
@@ -201,11 +209,11 @@ const EventsPage: React.FC = () => {
                                                 <span className="text-[10px] font-mono text-white/20 uppercase tracking-[0.2em]">ID: 00{event.id}</span>
                                             </div>
 
-                                            <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors pr-10">
+                                            <h3 className="text-3xl font-bold mb-4 group-hover:text-primary transition-colors pr-10">
                                                 {event.name}
                                             </h3>
 
-                                            <p className="text-white/40 text-sm font-light leading-relaxed mb-8 flex-grow">
+                                            <p className="text-white/40 text-base font-light leading-relaxed mb-8 flex-grow">
                                                 {event.remarks}
                                             </p>
 
@@ -215,8 +223,8 @@ const EventsPage: React.FC = () => {
                                                         <MapPin className="h-4 w-4 text-white/40" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-[10px] uppercase tracking-widest text-white/20 font-bold">Venue</p>
-                                                        <p className="text-xs text-white/80">{event.venue}</p>
+                                                        <p className="text-xs uppercase tracking-widest text-white/20 font-bold">Venue</p>
+                                                        <p className="text-sm text-white/80">{event.venue}</p>
                                                     </div>
                                                 </div>
 
@@ -226,8 +234,8 @@ const EventsPage: React.FC = () => {
                                                             <Trophy className="h-4 w-4 text-primary" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-[10px] uppercase tracking-widest text-primary/60 font-bold">Prizes</p>
-                                                            <p className="text-xs text-white/80">{event.prizes}</p>
+                                                            <p className="text-xs uppercase tracking-widest text-primary/60 font-bold">Prizes</p>
+                                                            <p className="text-sm text-white/80">{event.prizes}</p>
                                                         </div>
                                                     </div>
                                                 )}
@@ -238,8 +246,8 @@ const EventsPage: React.FC = () => {
                                                             <Users className="h-4 w-4 text-white/40" />
                                                         </div>
                                                         <div>
-                                                            <p className="text-[10px] uppercase tracking-widest text-white/20 font-bold">Capacity</p>
-                                                            <p className="text-xs text-white/80">{event.participants} Participants</p>
+                                                            <p className="text-xs uppercase tracking-widest text-white/20 font-bold">Capacity</p>
+                                                            <p className="text-sm text-white/80">{event.participants} Participants</p>
                                                         </div>
                                                     </div>
                                                 )}
@@ -260,7 +268,7 @@ const EventsPage: React.FC = () => {
                                                                 setSelectedTeam(team);
                                                                 setShowViewTeamModal(true);
                                                             }}
-                                                            className="mt-8 w-full py-4 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500/30"
+                                                            className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500/30"
                                                         >
                                                             <Users className="h-4 w-4" />
                                                             View Team Details
@@ -270,9 +278,15 @@ const EventsPage: React.FC = () => {
 
                                                 return (
                                                     <button
-                                                        onClick={() => handleRegisterEvent(eventId)}
+                                                        onClick={() => {
+                                                            if (event.name.toLowerCase().includes('locked in')) {
+                                                                window.open('https://unstop.com/p/locked-in-university-school-of-information-communication-and-technology-usict-ggs-indraprastha-university-ggsipu-new-d-1639028', '_blank');
+                                                                return;
+                                                            }
+                                                            handleRegisterEvent(eventId);
+                                                        }}
                                                         className={cn(
-                                                            "mt-8 w-full py-4 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2",
+                                                            "mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2",
                                                             isRegistered
                                                                 ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 cursor-default"
                                                                 : "bg-white text-black hover:bg-primary hover:text-white"

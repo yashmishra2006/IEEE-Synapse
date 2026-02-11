@@ -34,7 +34,7 @@ export const EVENTS: Event[] = [
         name: "Podcast",
         date: "23 Feb",
         venue: "E Block Seminar Hall",
-        prizes: "Gifts: Rs. 4,000",
+        prizes: "Rs. 4,000",
         participants: 100,
         remarks: "Interactive session on technology and careers"
     },
@@ -44,7 +44,7 @@ export const EVENTS: Event[] = [
         name: "Imagium – Photo Event",
         date: "23 Feb",
         venue: "—",
-        prizes: "Rs. 2,000 (2 winners)",
+        prizes: "Rs. 2,000",
         participants: 100,
         remarks: "Photography competition"
     },
@@ -54,7 +54,7 @@ export const EVENTS: Event[] = [
         name: "Designathon",
         date: "24 Feb",
         venue: "AIC/TnP",
-        prizes: "1st: Rs. 1,500, 2nd: Rs. 1,000, 3rd: Rs. 500",
+        prizes: "Rs. 3,000",
         participants: 60,
         remarks: "UI/UX design competition"
     },
@@ -74,7 +74,7 @@ export const EVENTS: Event[] = [
         name: "EarthWear",
         date: "25 Feb",
         venue: "Amphi Theatre",
-        prizes: "Prizes: Rs. 7,000, Gifts: Rs. 7,200",
+        prizes: "Rs. 14,200",
         participants: 64,
         remarks: "WIE Day celebration event"
     },
@@ -83,8 +83,8 @@ export const EVENTS: Event[] = [
         projectId: "69823eaf8914fa0818cfff92",
         name: "FrameSync",
         date: "25 Feb",
-        venue: "—",
-        prizes: "1st: Rs. 2,500, 2nd: Rs. 1,500, 3rd: Rs. 1,000",
+        venue: "College Campus",
+        prizes: "Rs. 5,000",
         remarks: "Photography & video editing challenge"
     },
     {
@@ -93,7 +93,7 @@ export const EVENTS: Event[] = [
         name: "Spin the Wheel",
         date: "25 Feb",
         venue: "Amphi Theatre",
-        prizes: "Gifts: Rs. 7,500, Stationary: Rs. 500",
+        prizes: "Rs. 8,000",
         participants: 60,
         remarks: "Interactive tech challenge"
     },
@@ -103,7 +103,7 @@ export const EVENTS: Event[] = [
         name: "IEEE Startup Sprint",
         date: "26 Feb",
         venue: "AIC",
-        prizes: "Prizes: Rs. 22,500",
+        prizes: "Rs. 22,500",
         participants: 60,
         remarks: "Startup pitching with AIC support"
     },
@@ -113,7 +113,7 @@ export const EVENTS: Event[] = [
         name: "IPL Auction",
         date: "26 Feb",
         venue: "E Block Seminar Hall",
-        prizes: "Prize: Rs. 3,000",
+        prizes: "Rs. 3,000",
         participants: 90,
         remarks: "Auction simulation for strategy skills"
     },
@@ -123,7 +123,7 @@ export const EVENTS: Event[] = [
         name: "Treasure Hunt",
         date: "27 Feb",
         venue: "TnP",
-        prizes: "Prize: Rs. 2,000",
+        prizes: "Rs. 2,000",
         participants: 100,
         remarks: "Problem-solving activity"
     },
@@ -133,7 +133,7 @@ export const EVENTS: Event[] = [
         name: "Stock Trading",
         date: "27 Feb",
         venue: "TnP",
-        prizes: "1st: Rs. 1,500, 2nd: Rs. 1,000, 3rd: Rs. 500",
+        prizes: "Rs. 3,000",
         participants: 60,
         remarks: "Paper trading simulation"
     }

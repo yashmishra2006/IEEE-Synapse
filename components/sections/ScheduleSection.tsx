@@ -13,42 +13,42 @@ const scheduleData = [
         date: "23 Feb",
         events: [
             { name: "Inauguration", venue: "E-Block", prize: "Lamp Lighting", icon: "sparkles" },
-            { name: "Locked In Hackathon", venue: "AIC/TnP", prize: "Prize: Rs. 12,000", icon: "code" },
-            { name: "Podcast", venue: "E-Block", prize: "Gifts: Rs. 4,000", icon: "mic" },
-            { name: "Imagium", venue: "—", prize: "Rs. 2,000 (Winners)", icon: "image" },
+            { name: "Locked In Hackathon", venue: "AIC/TnP", prize: "Rs. 12,000", icon: "code" },
+            { name: "Podcast", venue: "E-Block", prize: "Rs. 4,000", icon: "mic" },
+            { name: "Imagium", venue: "—", prize: "Rs. 2,000", icon: "image" },
         ]
     },
     {
         day: "Day 2",
         date: "24 Feb",
         events: [
-            { name: "Designathon", venue: "AIC/TnP", prize: "Prizes: Rs. 3,000", icon: "pen-tool" },
-            { name: "Gaming Event", venue: "AIC", prize: "Prize: Rs. 3,000", icon: "gamepad" },
+            { name: "Designathon", venue: "AIC/TnP", prize: "Rs. 3,000", icon: "pen-tool" },
+            { name: "Gaming Event", venue: "AIC", prize: "Rs. 3,000", icon: "gamepad" },
         ]
     },
     {
         day: "Day 3",
         date: "25 Feb",
         events: [
-            { name: "EarthWear", venue: "Amphi Theatre", prize: "Prizes/Gifts: Rs. 14,200", icon: "leaf" },
-            { name: "FrameSync", venue: "—", prize: "Prizes: Rs. 5,000", icon: "camera" },
-            { name: "Spin the Wheel", venue: "Amphi Theatre", prize: "Gifts: Rs. 8,000", icon: "rotate-cw" },
+            { name: "EarthWear", venue: "Amphi Theatre", prize: "Rs. 14,200", icon: "leaf" },
+            { name: "FrameSync", venue: "College Campus", prize: "Rs. 5,000", icon: "camera" },
+            { name: "Spin the Wheel", venue: "Amphi Theatre", prize: "Rs. 8,000", icon: "rotate-cw" },
         ]
     },
     {
         day: "Day 4",
         date: "26 Feb",
         events: [
-            { name: "Startup Sprint", venue: "AIC", prize: "Prizes: Rs. 22,500", icon: "rocket" },
-            { name: "IPL Auction", venue: "E-Block", prize: "Prize: Rs. 3,000", icon: "gavel" },
+            { name: "Startup Sprint", venue: "AIC", prize: "Rs. 22,500", icon: "rocket" },
+            { name: "IPL Auction", venue: "E-Block", prize: "Rs. 3,000", icon: "gavel" },
         ]
     },
     {
         day: "Day 5",
         date: "27 Feb",
         events: [
-            { name: "Treasure Hunt", venue: "TnP", prize: "Prize: Rs. 2,000", icon: "map" },
-            { name: "Stock Trading", venue: "TnP", prize: "Prizes: Rs. 3,000", icon: "trending-up" },
+            { name: "Treasure Hunt", venue: "TnP", prize: "Rs. 2,000", icon: "map" },
+            { name: "Stock Trading", venue: "TnP", prize: "Rs. 3,000", icon: "trending-up" },
         ]
     }
 ];
