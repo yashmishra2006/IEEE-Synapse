@@ -22,7 +22,7 @@ const coreTeam = [
     {
         name: "Mischa",
         role: "Head, PR",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mischa",
+        image: "mischa.jpeg",
     },
     {
         name: "Riddhima",
@@ -35,12 +35,12 @@ const techTeam = [
     {
         name: "Yash Mishra",
         role: "Technical Head",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=YashM",
+        image: "yash.jpg",
     },
     {
         name: "Arkin Kansra",
         role: "Technical Head",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arkin",
+        image: "arkin.png",
     },
     {
         name: "Ansh",
@@ -50,7 +50,7 @@ const techTeam = [
     {
         name: "Khushi Bhaskar",
         role: "WIE Tech Head",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Khushi",
+        image: "khushi.jpeg",
     },
     {
         name: "Lipika Aggarwal",
