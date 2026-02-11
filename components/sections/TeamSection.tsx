@@ -143,6 +143,7 @@ export const TeamSection: React.FC = () => {
                             initial="rest"
                             animate="rest"
                             whileHover="hover"
+                            whileTap="hover"
                         >
                             <div className="relative mb-6">
                                 <div className="aspect-square rounded-[2.5rem] overflow-hidden bg-white/5 border border-primary/40 group-hover:border-primary transition-all relative shadow-[0_0_40px_rgba(59,130,246,0.25)]">
