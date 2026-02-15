@@ -11,7 +11,8 @@ import {
     ChevronRight,
     Search,
     Filter,
-    CheckCircle2
+    CheckCircle2,
+    User
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { EVENTS } from '../constants/events';
@@ -19,10 +20,12 @@ import { Spotlight } from './ui/Spotlight';
 import FlickeringGrid from './ui/FlickeringGrid';
 import { cn } from '../utils/cn';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import RegisterForm from './RegisterForm';
 
 import TeamRegistrationModal from './TeamRegistrationModal';
 import ViewTeamModal from './ViewTeamModal';
+import ProfileModal from './ProfileModal';
 
 const EventsPage: React.FC = () => {
     const {
@@ -42,14 +45,17 @@ const EventsPage: React.FC = () => {
         selectedTeam,
         setSelectedTeam,
         registeringFor,
-        availableEvents
+        availableEvents,
+        addTeam
     } = useAuth();
+    const { showToast } = useToast();
     const event = registeringFor ? availableEvents.find(e => e.id === registeringFor) : null;
     const eventName = event?.event_name || 'Event';
     const isHackathon = eventName.toLowerCase().includes('hackathon');
 
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDay, setSelectedDay] = useState<'All' | '23 Feb' | '24 Feb' | '25 Feb' | '26 Feb' | '27 Feb'>('All');
+    const [showProfileModal, setShowProfileModal] = useState(false);
 
     const filteredEvents = EVENTS.filter(event => {
         const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -85,16 +91,23 @@ const EventsPage: React.FC = () => {
                 <TeamRegistrationModal
                     eventId={registeringFor}
                     eventName={eventName}
-                    onSuccess={() => {
+                    onSuccess={async (team) => {
+                        // First refresh to get latest data from backend
+                        await refreshRegistrationData();
+                        // Then update local state with the new team (in case refresh was slow)
+                        addTeam(registeringFor, team);
+                        setSelectedTeam(team);
                         setShowTeamModal(false);
-                        refreshRegistrationData();
-                        alert('Team synchronization successful!');
+                        setShowViewTeamModal(true);
+                        showToast('Team registered successfully!', 'success');
                     }}
                     onCancel={() => {
                         setShowTeamModal(false);
-                        if (!isHackathon) {
+                        // Only unregister if user doesn't have a team yet
+                        // Check userTeams state to see if they completed team creation
+                        if (!isHackathon && !userTeams[registeringFor]) {
                             handleUnregisterEvent(registeringFor);
-                            alert('Team is mandatory for this event. You have been unregistered.');
+                            showToast('Team is mandatory for this event. You have been unregistered.', 'info');
                         }
                     }}
                 />
@@ -104,6 +117,15 @@ const EventsPage: React.FC = () => {
                 <ViewTeamModal
                     team={selectedTeam}
                     onClose={() => setShowViewTeamModal(false)}
+                />
+            )}
+
+            {showProfileModal && user && (
+                <ProfileModal
+                    user={user}
+                    onClose={() => setShowProfileModal(false)}
+                    onUpdate={fetchProfile}
+                    onNotify={(message, type) => showToast(message, type)}
                 />
             )}
             <div className="fixed inset-0 z-0">
@@ -122,10 +144,22 @@ const EventsPage: React.FC = () => {
                 {/* Header */}
                 <header className="sticky top-0 z-50 bg-black/50 backdrop-blur-xl border-b border-white/5 py-4 px-6">
                     <div className="max-w-7xl mx-auto flex items-center justify-between">
-                        <Link to="/" className="flex items-center gap-2 group text-white/60 hover:text-white transition-colors">
-                            <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Back to Home</span>
-                        </Link>
+                        <div className="flex items-center gap-6">
+                            <Link to="/" className="flex items-center gap-2 group text-white/60 hover:text-white transition-colors">
+                                <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+                                <span className="text-xs font-bold uppercase tracking-widest">Back to Home</span>
+                            </Link>
+
+                            {user && (
+                                <button
+                                    onClick={() => setShowProfileModal(true)}
+                                    className="flex items-center justify-center gap-2 bg-white text-black h-9 w-9 sm:w-auto sm:h-auto sm:px-4 sm:py-2 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-widest hover:bg-gray-200 transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)] active:scale-95"
+                                >
+                                    <User className="h-4 w-4" />
+                                    <span className="hidden sm:inline">My Profile</span>
+                                </button>
+                            )}
+                        </div>
                         <div className="flex flex-col items-end">
                             <h1 className="text-lg font-black tracking-tighter uppercase leading-none">All Events</h1>
                             <p className="text-[9px] font-mono text-primary tracking-[0.3em] uppercase mt-1">IEEE USICT | 2026</p>
@@ -240,17 +274,29 @@ const EventsPage: React.FC = () => {
                                                     </div>
                                                 )}
 
-                                                {event.participants && (
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center">
-                                                            <Users className="h-4 w-4 text-white/40" />
+                                                {(() => {
+                                                    const eventId = event.projectId || event.id.toString();
+                                                    const meta = availableEvents.find(e => e.id === eventId);
+                                                    const isTeamEvent = meta?.event_team_allowed;
+
+                                                    return (
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center">
+                                                                <Users className="h-4 w-4 text-white/40" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-xs uppercase tracking-widest text-white/20 font-bold">Participation</p>
+                                                                <p className="text-sm text-white/80">
+                                                                    {event.teamSize
+                                                                        ? `Team Size: ${event.teamSize}`
+                                                                        : (isTeamEvent
+                                                                            ? `Team Size: ${meta?.min_team_size || 1} - ${meta?.max_team_size || 4}`
+                                                                            : 'Individual')}
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <p className="text-xs uppercase tracking-widest text-white/20 font-bold">Capacity</p>
-                                                            <p className="text-sm text-white/80">{event.participants} Participants</p>
-                                                        </div>
-                                                    </div>
-                                                )}
+                                                    );
+                                                })()}
                                             </div>
 
                                             {(() => {
@@ -261,17 +307,41 @@ const EventsPage: React.FC = () => {
                                                 const meta = availableEvents.find(e => e.id === eventId);
                                                 const needsTeam = meta?.event_team_allowed && !meta.event_name.toLowerCase().includes('hackathon');
 
-                                                if (isRegistered && hasTeam) {
+                                                if (isRegistered) {
+                                                    if (hasTeam) {
+                                                        return (
+                                                            <button
+                                                                onClick={() => {
+                                                                    setSelectedTeam(team);
+                                                                    setShowViewTeamModal(true);
+                                                                }}
+                                                                className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500/30"
+                                                            >
+                                                                <Users className="h-4 w-4" />
+                                                                View Team Details
+                                                            </button>
+                                                        );
+                                                    }
+
+                                                    if (needsTeam) {
+                                                        return (
+                                                            <button
+                                                                onClick={() => handleRegisterEvent(eventId)}
+                                                                className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-amber-500/20 text-amber-500 border border-amber-500/30 hover:bg-amber-500/30 animate-pulse"
+                                                            >
+                                                                <Users className="h-4 w-4" />
+                                                                Complete Registration
+                                                            </button>
+                                                        );
+                                                    }
+
                                                     return (
                                                         <button
-                                                            onClick={() => {
-                                                                setSelectedTeam(team);
-                                                                setShowViewTeamModal(true);
-                                                            }}
-                                                            className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500/30"
+                                                            disabled
+                                                            className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-2 bg-emerald-500/10 text-emerald-500/50 border border-emerald-500/10 cursor-default"
                                                         >
-                                                            <Users className="h-4 w-4" />
-                                                            View Team Details
+                                                            <CheckCircle2 className="h-4 w-4" />
+                                                            Registered
                                                         </button>
                                                     );
                                                 }
@@ -285,17 +355,12 @@ const EventsPage: React.FC = () => {
                                                             }
                                                             handleRegisterEvent(eventId);
                                                         }}
-                                                        className={cn(
-                                                            "mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2",
-                                                            isRegistered
-                                                                ? "bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 cursor-default"
-                                                                : "bg-white text-black hover:bg-primary hover:text-white"
-                                                        )}
+                                                        className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center justify-center gap-2 bg-white text-black hover:bg-primary hover:text-white"
                                                     >
-                                                        {isRegistered ? (
+                                                        {event.name.toLowerCase().includes('locked in') ? (
                                                             <>
-                                                                <CheckCircle2 className="h-4 w-4" />
-                                                                Registered
+                                                                Register on Unstop
+                                                                <ChevronRight className="h-4 w-4" />
                                                             </>
                                                         ) : (
                                                             <>

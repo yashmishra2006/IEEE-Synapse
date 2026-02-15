@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
+import { ToastProvider, useToast } from './context/ToastContext';
 import LaunchScreen from './components/LaunchScreen';
 import EventsPage from './components/EventsPage';
 
@@ -22,15 +23,17 @@ const GlobalLoginTrigger: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <GlobalLoginTrigger />
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<LaunchScreen />} />
-          <Route path="/events" element={<EventsPage />} />
-        </Routes>
-      </HashRouter>
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <GlobalLoginTrigger />
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<LaunchScreen />} />
+            <Route path="/events" element={<EventsPage />} />
+          </Routes>
+        </HashRouter>
+      </AuthProvider>
+    </ToastProvider>
   );
 };
 

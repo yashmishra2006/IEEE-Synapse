@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { userService } from '../services/userService';
 import { User, Event } from '../types/api';
+import { useToast } from './ToastContext';
 
 interface AuthContextType {
     user: any;
@@ -27,11 +28,13 @@ interface AuthContextType {
     setShowViewTeamModal: (show: boolean) => void;
     selectedTeam: any;
     setSelectedTeam: (team: any) => void;
+    addTeam: (eventId: string, team: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { showToast } = useToast();
     const [user, setUser] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [availableEvents, setAvailableEvents] = useState<Event[]>([]);
@@ -99,9 +102,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
             if (registered && typeof registered === 'object') {
                 regArray = registered.registered_event || registered.registered || registered.data || registered.items || [];
-                const teamsArray = registered.registered_team || registered.teams || [];
-                teamsArray.forEach((t: any) => {
-                    if (t.event_id) teamsObj[t.event_id] = t;
+
+                // Extract team information from registered_event array
+                regArray.forEach((reg: any) => {
+                    if (reg.team_id && reg.event_id) {
+                        // Build team object from the registration data
+                        teamsObj[reg.event_id] = {
+                            team_id: reg.team_id,
+                            team_name: reg.team_name,
+                            team_code: reg.team_code,
+                            team_created_on: reg.team_created_on,
+                            event_id: reg.event_id,
+                            role: reg.role,
+                            members: reg.members || [] // Include members from backend
+                        };
+
+                    }
                 });
             } else if (Array.isArray(registered)) {
                 regArray = registered;
@@ -112,6 +128,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 if (typeof r === 'string') return r;
                 return r.event_id || r.id || r._id || (r.event ? (r.event.id || r.event._id) : null);
             }).filter(Boolean));
+
         } catch (err) {
             console.error('Failed to fetch data:', err);
         }
@@ -148,12 +165,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             setIsLoading(true);
             await userService.unregisterEvent(eventId);
+            setUserTeams(prev => {
+                const newState = { ...prev };
+                delete newState[eventId];
+                return newState;
+            });
             await refreshRegistrationData();
         } catch (err) {
             console.error('Failed to unregister:', err);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const addTeam = (eventId: string, team: any) => {
+        setUserTeams(prev => ({
+            ...prev,
+            [eventId]: team
+        }));
     };
 
     const handleRegisterEvent = async (eventId: string) => {
@@ -192,15 +221,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     setRegisteringFor(eventId);
                     setShowTeamModal(true);
                 } else {
-                    alert('Successfully registered!');
+                    showToast('Successfully registered!', 'success');
                 }
             } else {
-                alert('Successfully registered for ' + (eventMetadata?.event_name || 'event') + '!');
+                showToast('Successfully registered for ' + (eventMetadata?.event_name || 'event') + '!', 'success');
             }
             setPendingEventId(null);
         } catch (err: any) {
             console.error('Registration error:', err);
-            alert(err.response?.data?.detail || 'Failed to register. Please try again.');
+            showToast(err.response?.data?.detail || 'Failed to register. Please try again.', 'error');
         } finally {
             setIsLoading(false);
         }
@@ -243,7 +272,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             showViewTeamModal,
             setShowViewTeamModal,
             selectedTeam,
-            setSelectedTeam
+            setSelectedTeam,
+            addTeam
         }}>
             {children}
         </AuthContext.Provider>

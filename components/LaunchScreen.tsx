@@ -24,6 +24,8 @@ import TeamRegistrationModal from './TeamRegistrationModal';
 
 import { useAuth } from '../context/AuthContext';
 import ViewTeamModal from './ViewTeamModal';
+import { useToast } from '../context/ToastContext';
+
 
 const LaunchScreen: React.FC = () => {
   const {
@@ -46,6 +48,8 @@ const LaunchScreen: React.FC = () => {
     triggerLogin,
     setSelectedTeam
   } = useAuth();
+  const { showToast } = useToast();
+
 
   // Find event and check if it's the exempt hackathon
   const event = registeringFor ? availableEvents.find(e => e.id === registeringFor) : null;
@@ -101,16 +105,18 @@ const LaunchScreen: React.FC = () => {
         <TeamRegistrationModal
           eventId={registeringFor}
           eventName={eventName}
-          onSuccess={() => {
+          onSuccess={async (team) => {
+            await refreshRegistrationData();
+            setSelectedTeam(team);
             setShowTeamModal(false);
-            refreshRegistrationData();
-            alert('Team synchronization successful!');
+            setShowViewTeamModal(true);
+            showToast('Team synchronization successful!', 'success');
           }}
           onCancel={() => {
             setShowTeamModal(false);
             if (!isHackathon) {
               handleUnregisterEvent(registeringFor);
-              alert('Team is mandatory for this event. You have been unregistered.');
+              showToast('Team is mandatory for this event. You have been unregistered.', 'info');
             }
           }}
         />

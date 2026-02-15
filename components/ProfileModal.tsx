@@ -53,42 +53,44 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, user, onUpdate, on
     };
 
     return (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn overflow-y-auto">
-            <div className="bg-background-dark border border-[#213a4a] rounded-lg w-full max-w-2xl overflow-hidden shadow-2xl my-4 sm:my-8">
-                <div className="bg-primary/10 border-b border-[#213a4a] px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center">
-                    <div>
-                        <h2 className="text-white font-bold text-base sm:text-lg">Profile Settings</h2>
-                        <p className="text-slate-400 text-[9px] sm:text-[10px] mt-0.5 uppercase tracking-widest font-mono">Update your information</p>
-                    </div>
-                    <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl selection:bg-primary/30">
+            <div className="bg-[#050505] border border-white/10 rounded-[2.5rem] w-full max-w-2xl overflow-hidden shadow-2xl">
+                <div className="relative px-8 py-10 border-b border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
+                    <button
+                        onClick={onClose}
+                        className="absolute top-8 right-8 text-white/40 hover:text-white transition-colors"
+                    >
                         <span className="material-symbols-outlined">close</span>
                     </button>
+
+                    <h2 className="text-3xl font-bold text-white mb-2">Profile Settings</h2>
+                    <p className="text-white/40 text-sm font-light tracking-wide">Update your information</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-3 sm:p-4 space-y-3 max-h-[70vh] overflow-y-auto">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs p-3 rounded flex items-center gap-2">
-                            <span className="material-symbols-outlined text-sm">error</span>
+                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-4 rounded-2xl flex items-center gap-3">
+                            <span className="material-symbols-outlined text-base">error</span>
                             {error}
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Full Name *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Full Name *</label>
                             <input
                                 required
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="Enter your full name"
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Email *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Email *</label>
                             <input
                                 required
                                 type="email"
@@ -96,58 +98,58 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, user, onUpdate, on
                                 value={formData.email}
                                 onChange={handleChange}
                                 disabled
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors opacity-50 cursor-not-allowed"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all opacity-50 cursor-not-allowed placeholder:text-white/20"
                                 placeholder="your.email@example.com"
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Phone Number *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Phone Number *</label>
                             <input
                                 required
                                 type="tel"
                                 name="phone_number"
                                 value={formData.phone_number}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="+91 9876543210"
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">College / University *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">College / University *</label>
                             <input
                                 required
                                 type="text"
                                 name="college_or_university"
                                 value={formData.college_or_university}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="Institution name"
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Course *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Course *</label>
                             <input
                                 required
                                 type="text"
                                 name="course"
                                 value={formData.course}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="B.Tech CSE, MBA, etc."
                             />
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Year *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Year *</label>
                             <select
                                 required
                                 name="year"
                                 value={formData.year}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors appearance-none cursor-pointer"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all appearance-none cursor-pointer"
                             >
                                 <option value={1}>1st Year</option>
                                 <option value={2}>2nd Year</option>
@@ -157,13 +159,13 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, user, onUpdate, on
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">Gender *</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">Gender *</label>
                             <select
                                 required
                                 name="gender"
                                 value={formData.gender}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors appearance-none cursor-pointer"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all appearance-none cursor-pointer"
                             >
                                 <option value="M">Male</option>
                                 <option value="F">Female</option>
@@ -172,42 +174,42 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, user, onUpdate, on
                         </div>
 
                         <div>
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">GitHub Profile</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">GitHub Profile (Optional)</label>
                             <input
                                 type="url"
                                 name="github_profile"
                                 value={formData.github_profile}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="https://github.com/username"
                             />
                         </div>
 
                         <div className="md:col-span-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1 mb-1.5 block">LinkedIn Profile</label>
+                            <label className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em] ml-1 mb-2 block">LinkedIn Profile (Optional)</label>
                             <input
                                 type="url"
                                 name="linkedin_profile"
                                 value={formData.linkedin_profile}
                                 onChange={handleChange}
-                                className="w-full bg-[#0f1b23] border border-[#213a4a] rounded-lg px-4 py-2 text-white text-sm focus:border-primary focus:outline-none transition-colors"
+                                className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 text-white text-sm focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all placeholder:text-white/20"
                                 placeholder="https://linkedin.com/in/username"
                             />
                         </div>
                     </div>
 
-                    <div className="pt-3 flex gap-3 border-t border-[#213a4a] mt-4">
+                    <div className="pt-4 flex gap-3">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-[#213a4a] text-slate-400 font-bold text-xs sm:text-sm hover:bg-slate-800 hover:text-white transition-all"
+                            className="flex-1 px-6 py-4 rounded-2xl border border-white/10 text-white/60 font-bold text-sm hover:bg-white/5 hover:text-white transition-all"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-[2] bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 shadow-lg transition-all"
+                            className="flex-[2] bg-white hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed text-black hover:text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all transform active:scale-95"
                         >
                             {loading ? 'Updating...' : 'Save Changes'}
                         </button>

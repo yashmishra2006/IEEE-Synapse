@@ -115,7 +115,17 @@ def signup_team(
     )
 
 
-    return {"message": "Team registered successfully", "team_code": team_code}
+
+    return {
+        "message": "Team registered successfully",
+        "team_id": str(team_id),
+        "team_code": team_code,
+        "team_name": team_name,
+        "event_id": str(event_id),
+        "leader_id": str(user_id),
+        "members": []  # Initially empty, will be populated as users join
+    }
+
 
 
 
@@ -149,10 +159,20 @@ def register_event(
         }}
     )
     
+    
     set_user_team(user_id, event_id, team_id)
 
+    # Return complete team details
+    return {
+        "message": "Team Member registered successfully",
+        "team_id": str(team_id),
+        "team_code": team["team_code"],
+        "team_name": team["team_name"],
+        "event_id": str(event_id),
+        "leader_id": str(team["leader_id"]),
+        "members": [str(m) for m in team.get("members", [])] + [str(user_id)]  # Include newly joined member
+    }
 
-    return {"message": "Team Member registered successfully"}
 
 
 @router.delete("/delete")

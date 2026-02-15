@@ -6,6 +6,7 @@ export interface Event {
     venue: string;
     prizes?: string;
     participants?: number;
+    teamSize?: string;
     remarks: string;
 }
 
@@ -56,6 +57,7 @@ export const EVENTS: Event[] = [
         venue: "AIC/TnP",
         prizes: "Rs. 3,000",
         participants: 60,
+        teamSize: "2",
         remarks: "UI/UX design competition"
     },
     {
@@ -76,6 +78,7 @@ export const EVENTS: Event[] = [
         venue: "Amphi Theatre",
         prizes: "Rs. 14,200",
         participants: 64,
+        teamSize: "3",
         remarks: "WIE Day celebration event"
     },
     {
@@ -105,6 +108,7 @@ export const EVENTS: Event[] = [
         venue: "AIC",
         prizes: "Rs. 22,500",
         participants: 60,
+        teamSize: "3",
         remarks: "Startup pitching with AIC support"
     },
     {
@@ -115,6 +119,7 @@ export const EVENTS: Event[] = [
         venue: "E Block Seminar Hall",
         prizes: "Rs. 3,000",
         participants: 90,
+        teamSize: "5",
         remarks: "Auction simulation for strategy skills"
     },
     {
@@ -125,6 +130,7 @@ export const EVENTS: Event[] = [
         venue: "TnP",
         prizes: "Rs. 2,000",
         participants: 100,
+        teamSize: "3",
         remarks: "Problem-solving activity"
     },
     {

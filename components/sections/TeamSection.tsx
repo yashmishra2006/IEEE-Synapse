@@ -11,10 +11,10 @@ const chairperson = {
 
 const coreTeam = [
     {
-    name: "Yash Singh",
-    role: "Chairperson, IEEE",
-    image: "image.png",
-},
+        name: "Yash Singh",
+        role: "Chairperson, IEEE",
+        image: "image.png",
+    },
     {
         name: "Riya Jindal",
         role: "Gen Sec, IEEE",
@@ -98,13 +98,13 @@ const MemberCard = ({ member, i }: { member: any, i: number, key?: any }) => (
 
 export const TeamSection: React.FC = () => {
     return (
-        <section id="team" className="py-32 px-6 relative overflow-hidden">
+        <section id="team" className="py-20 lg:py-32 px-6 relative overflow-hidden">
             {/* Background Accents */}
             <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
             <div className="absolute bottom-1/4 -left-20 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="max-w-6xl mx-auto relative z-10">
-                <div className="text-center mb-32">
+                <div className="text-center mb-16 lg:mb-32">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}

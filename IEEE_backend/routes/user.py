@@ -190,22 +190,64 @@ def get_registered_events_teams(credentials: HTTPAuthorizationCredentials = Depe
         {},
         {"_id":1,
          "team_name":1,
+         "team_code":1,  # Add team_code to projection
          "registered_on":1,
-         "leader_id":1})
+         "leader_id":1,
+         "members":1})  # Add members to get member IDs
     
     event_map = {
         str(e["_id"]): e["event_name"]
         for e in event
     }
 
-    team_map = {
-        str(t["_id"]): {
+    user_collection = current_user_collection()
+    
+    # Build team map with member details
+    team_map = {}
+    for t in team:
+        team_id = str(t["_id"])
+        leader_id = t.get("leader_id")
+        member_ids = t.get("members", [])
+        
+        # Fetch leader details
+        leader = user_collection.find_one(
+            {"_id": leader_id},
+            {"name": 1, "email": 1}
+        )
+        
+        # Fetch member details
+        members_data = []
+        if member_ids:
+            members_cursor = user_collection.find(
+                {"_id": {"$in": member_ids}},
+                {"name": 1, "email": 1}
+            )
+            members_data = [
+                {
+                    "name": m.get("name"),
+                    "email": m.get("email")
+                }
+                for m in members_cursor
+            ]
+        
+        # Build complete members list (leader first, then members)
+        all_members = []
+        if leader:
+            all_members.append({
+                "name": leader.get("name"),
+                "email": leader.get("email"),
+                "role": "leader"
+            })
+        all_members.extend([{**m, "role": "member"} for m in members_data])
+        
+        team_map[team_id] = {
             "team_name": t["team_name"],
+            "team_code": t.get("team_code"),
             "team_created_on": t.get("registered_on"),
-            "leader_id": t.get("leader_id")
+            "leader_id": leader_id,
+            "members": all_members  # Include full member details
         }
-        for t in team
-    }
+
 
     result = []
 
@@ -227,11 +269,14 @@ def get_registered_events_teams(credentials: HTTPAuthorizationCredentials = Depe
             "registered_for_event_on": reg.get("registered_on"),
             "team_id": team_id,
             "team_name": team_map.get(team_id, {}).get("team_name"),
+            "team_code": team_map.get(team_id, {}).get("team_code"),  # Add team_code to response
             "team_created_on": team_map.get(team_id, {}).get("team_created_on"),
+            "members": team_map.get(team_id, {}).get("members", []),  # Add members to response
             "role":role
         })
 
     return {"registered_event": result}
+
 
     
 @router.get("/event")
