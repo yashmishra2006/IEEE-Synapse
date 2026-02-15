@@ -29,7 +29,7 @@ const coreTeam = [
     {
         name: "Mischa",
         role: "Head, PR",
-        image: "mischa.jpeg",
+        image: "mischa.webp",
     },
     {
         name: "Unnati",
