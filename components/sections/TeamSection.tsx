@@ -25,16 +25,18 @@ const coreTeam = [
         role: "Chairperson, WIE",
         image: "khwaish.jpeg",
     },
-    {
-        name: "Unnati",
-        role: "Head, Logistics",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Unnati",
-    },
+
     {
         name: "Mischa",
         role: "Head, PR",
         image: "mischa.jpeg",
     },
+    {
+        name: "Unnati",
+        role: "Head, Logistics",
+        image: "unnati.jpeg",
+    },
+
     {
         name: "Riddhima",
         role: "Treasurer",
@@ -46,7 +48,7 @@ const techTeam = [
     {
         name: "Yash Mishra",
         role: "Technical Head",
-        image: "yash.jpg",
+        image: "yash1.jpg",
     },
     {
         name: "Arkin Kansra",
@@ -54,9 +56,14 @@ const techTeam = [
         image: "arkin.png",
     },
     {
+        name: "Arnesh",
+        role: "Backend Team",
+        image: "arnesh.jpeg",
+    },
+    {
         name: "Ansh",
         role: "Technical Head",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ansh",
+        image: "ansh.jpeg",
     },
     {
         name: "Khushi Bhaskar",
@@ -127,7 +134,7 @@ export const TeamSection: React.FC = () => {
                         <h3 className="text-xs font-mono text-white/20 uppercase tracking-[0.3em]">Core Leadership</h3>
                         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
                         {coreTeam.map((member, i) => (
                             <MemberCard key={i} member={member} i={i} />
                         ))}
@@ -141,7 +148,7 @@ export const TeamSection: React.FC = () => {
                         <h3 className="text-xs font-mono text-white/20 uppercase tracking-[0.3em]">Technical Architects</h3>
                         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
                         {techTeam.map((member, i) => (
                             <MemberCard key={i} member={member} i={i} />
                         ))}
