@@ -53,7 +53,7 @@ const techTeam = [
     {
         name: "Arkin Kansra",
         role: "Technical Head",
-        image: "arkin.png",
+        image: "arkin1.png",
     },
     {
         name: "Arnesh",
