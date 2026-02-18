@@ -15,7 +15,6 @@ const scheduleData = [
             { name: "Inauguration", venue: "E-Block", prize: "Lamp Lighting", icon: "sparkles" },
             { name: "Locked In Hackathon", venue: "AIC/TnP", prize: "Rs. 12,000", icon: "code" },
             { name: "Podcast", venue: "E-Block", prize: "Rs. 4,000", icon: "mic" },
-            { name: "Imagium", venue: "—", prize: "Rs. 2,000", icon: "image" },
         ]
     },
     {
@@ -30,7 +29,7 @@ const scheduleData = [
         day: "Day 3",
         date: "25 Feb",
         events: [
-            { name: "EarthWear", venue: "Amphi Theatre", prize: "Rs. 14,200", icon: "leaf" },
+            { name: "EarthWear - Coming Soon", venue: "Amphi Theatre", prize: "Coming Soon", icon: "leaf" },
             { name: "FrameSync", venue: "College Campus", prize: "Rs. 5,000", icon: "camera" },
             { name: "Spin the Wheel", venue: "Amphi Theatre", prize: "Rs. 8,000", icon: "rotate-cw" },
         ]
@@ -39,7 +38,6 @@ const scheduleData = [
         day: "Day 4",
         date: "26 Feb",
         events: [
-            { name: "Startup Sprint", venue: "AIC", prize: "Rs. 22,500", icon: "rocket" },
             { name: "IPL Auction", venue: "E-Block", prize: "Rs. 3,000", icon: "gavel" },
         ]
     },
@@ -48,7 +46,6 @@ const scheduleData = [
         date: "27 Feb",
         events: [
             { name: "Treasure Hunt", venue: "TnP", prize: "Rs. 2,000", icon: "map" },
-            { name: "Stock Trading", venue: "TnP", prize: "Rs. 3,000", icon: "trending-up" },
         ]
     }
 ];

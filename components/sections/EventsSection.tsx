@@ -24,13 +24,6 @@ const featuredEvents = [
         icon: PenTool,
         color: "from-orange-500/20 to-red-500/20",
         border: "border-orange-500/20"
-    },
-    {
-        name: "Startup Sprint",
-        desc: "Pitch your startup idea and win prizes of Rs. 22,500.",
-        icon: Rocket,
-        color: "from-emerald-500/20 to-teal-500/20",
-        border: "border-emerald-500/20"
     }
 ];
 

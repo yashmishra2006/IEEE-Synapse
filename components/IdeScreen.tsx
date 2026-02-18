@@ -83,25 +83,7 @@ const INITIAL_FILES: FileNode[] = [
   status: "Ongoing"
 };`
           },
-          {
-            id: 'imagium.js',
-            name: 'imagium.js',
-            type: 'file',
-            parentId: 'events',
-            content: `export const event = {
-  name: "Imagium",
-  description: "Photography competition capturing the essence of campus life and technology.",
-  date: "2026-02-16",
-  time: "09:00",
-  duration: "All Day",
-  type: "Free",
-  venue: "Campus Wide",
-  inCharge: "IEEE Fine Arts",
-  capacity: 1000,
-  reward: "Rs. 2,000 Total",
-  status: "Ongoing"
-};`
-          },
+
           {
             id: 'designathon.js',
             name: 'designathon.js',
@@ -135,12 +117,10 @@ const INITIAL_FILES: FileNode[] = [
             type: 'file',
             parentId: 'events',
             content: `export const event = {
-  name: "EarthWear",
+  name: "EarthWear - Coming Soon",
   date: "2026-02-18",
   venue: "Amphi Theatre",
-  reward: "Rewards: Rs. 14,200",
-  teamAllowed: true,
-  teamSize: 3
+  status: "Coming Soon"
 };`
           },
           {
@@ -167,20 +147,7 @@ const INITIAL_FILES: FileNode[] = [
   reward: "Gifts: Rs. 8,000"
 };`
           },
-          {
-            id: 'startup-sprint.js',
-            name: 'startup-sprint.js',
-            type: 'file',
-            parentId: 'events',
-            content: `export const event = {
-  name: "IEEE Startup Sprint",
-  date: "2026-02-19",
-  venue: "AIC",
-  reward: "Prizes: Rs. 22,500",
-  teamAllowed: true,
-  teamSize: 3
-};`
-          },
+
           {
             id: 'ipl-auction.js',
             name: 'ipl-auction.js',
@@ -208,18 +175,6 @@ const INITIAL_FILES: FileNode[] = [
   teamAllowed: true,
   teamSize: 3
 };`
-          },
-          {
-            id: 'stock-trading.js',
-            name: 'stock-trading.js',
-            type: 'file',
-            parentId: 'events',
-            content: `export const event = {
-  name: "Stock Trading",
-  date: "2026-02-20",
-  venue: "TnP Area",
-  reward: "Prizes: Rs. 3,000"
-};`
           }
         ]
       },
@@ -231,16 +186,13 @@ const INITIAL_FILES: FileNode[] = [
         content: `export const schedule = [
   { name: "Locked In Hackathon", date: "16 Feb", venue: "AIC/TnP" },
   { name: "Podcast", date: "16 Feb", venue: "E-Block" },
-  { name: "Imagium", date: "16 Feb", venue: "Campus Wide" },
   { name: "Designathon", date: "17 Feb", venue: "AIC/TnP" },
   { name: "Gaming Event", date: "17 Feb", venue: "AIC" },
-  { name: "EarthWear", date: "18 Feb", venue: "Amphi Theatre" },
+  { name: "EarthWear - Coming Soon", date: "18 Feb", venue: "Amphi Theatre" },
   { name: "FrameSync", date: "18 Feb", venue: "Campus" },
   { name: "Spin the Wheel", date: "18 Feb", venue: "Amphi Theatre" },
-  { name: "IEEE Startup Sprint", date: "19 Feb", venue: "AIC" },
   { name: "IPL Auction", date: "19 Feb", venue: "E-Block" },
-  { name: "Treasure Hunt", date: "20 Feb", venue: "TnP Area" },
-  { name: "Stock Trading", date: "20 Feb", venue: "TnP Area" }
+  { name: "Treasure Hunt", date: "20 Feb", venue: "TnP Area" }
 ];`
       },
       {
@@ -264,17 +216,14 @@ const INITIAL_FILES: FileNode[] = [
         parentId: 'root',
         content: `export const rewards = {
   hackathon: "Rs. 12,000",
-  startup_sprint: "Rs. 22,500",
-  earthwear: "Rs. 14,200",
+  earthwear: "Coming Soon",
   spin_the_wheel: "Rs. 8,000",
   framesync: "Rs. 5,000",
   podcast: "Rs. 4,000",
   designathon: "Rs. 3,000",
   gaming: "Rs. 3,000",
   ipl_auction: "Rs. 3,000",
-  stock_trading: "Rs. 3,000",
-  treasure_hunt: "Rs. 2,000",
-  imagium: "Rs. 2,000"
+  treasure_hunt: "Rs. 2,000"
 };`
       },
       {
@@ -900,8 +849,8 @@ const IdeScreen: React.FC = () => {
             </div>
           </div>
           <div className="mt-auto flex flex-col gap-4 sm:gap-6 w-full pb-2">
-            <div 
-              onClick={() => user ? setShowProfileModal(true) : showNotification('Please login to access settings', 'info')} 
+            <div
+              onClick={() => user ? setShowProfileModal(true) : showNotification('Please login to access settings', 'info')}
               className="flex justify-center cursor-pointer text-slate-500 hover:text-white transition-colors"
               title={user ? "Profile Settings" : "Login to access settings"}
             >
@@ -912,8 +861,8 @@ const IdeScreen: React.FC = () => {
 
         {/* Mobile Sidebar Overlay */}
         {sidebarVisible && (
-          <div 
-            className="fixed inset-0 bg-black/50 z-20 md:hidden" 
+          <div
+            className="fixed inset-0 bg-black/50 z-20 md:hidden"
             onClick={() => setSidebarVisible(false)}
           />
         )}
@@ -1315,14 +1264,13 @@ const IdeScreen: React.FC = () => {
         />
       )}
       {notification && (
-        <div className={`fixed top-4 right-4 z-[200] animate-fadeIn ${
-          notification.type === 'success' ? 'bg-green-500/90' :
+        <div className={`fixed top-4 right-4 z-[200] animate-fadeIn ${notification.type === 'success' ? 'bg-green-500/90' :
           notification.type === 'error' ? 'bg-red-500/90' :
-          'bg-blue-500/90'
-        } text-white px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 max-w-md`}>
+            'bg-blue-500/90'
+          } text-white px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 max-w-md`}>
           <span className="material-symbols-outlined text-xl">
             {notification.type === 'success' ? 'check_circle' :
-             notification.type === 'error' ? 'error' : 'info'}
+              notification.type === 'error' ? 'error' : 'info'}
           </span>
           <p className="text-sm font-medium">{notification.message}</p>
           <button onClick={() => setNotification(null)} className="ml-2 hover:bg-white/20 rounded p-1 transition-colors">

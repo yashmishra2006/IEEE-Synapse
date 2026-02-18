@@ -40,16 +40,6 @@ export const EVENTS: Event[] = [
         remarks: "Interactive session on technology and careers"
     },
     {
-        id: 4,
-        projectId: "69823eaf8914fa0818cfff8e",
-        name: "Imagium – Photo Event",
-        date: "23 Feb",
-        venue: "—",
-        prizes: "Rs. 2,000",
-        participants: 100,
-        remarks: "Photography competition"
-    },
-    {
         id: 5,
         projectId: "69823eaf8914fa0818cfff8f",
         name: "Designathon",
@@ -71,17 +61,6 @@ export const EVENTS: Event[] = [
         remarks: "Multiplayer gaming rounds"
     },
     {
-        id: 7,
-        projectId: "69823eaf8914fa0818cfff91",
-        name: "EarthWear",
-        date: "25 Feb",
-        venue: "Amphi Theatre",
-        prizes: "Rs. 14,200",
-        participants: 64,
-        teamSize: "3",
-        remarks: "WIE Day celebration event"
-    },
-    {
         id: 8,
         projectId: "69823eaf8914fa0818cfff92",
         name: "FrameSync",
@@ -99,17 +78,6 @@ export const EVENTS: Event[] = [
         prizes: "Rs. 8,000",
         participants: 60,
         remarks: "Interactive tech challenge"
-    },
-    {
-        id: 10,
-        projectId: "69823eaf8914fa0818cfff94",
-        name: "IEEE Startup Sprint",
-        date: "26 Feb",
-        venue: "AIC",
-        prizes: "Rs. 22,500",
-        participants: 60,
-        teamSize: "3",
-        remarks: "Startup pitching with AIC support"
     },
     {
         id: 11,
@@ -134,13 +102,11 @@ export const EVENTS: Event[] = [
         remarks: "Problem-solving activity"
     },
     {
-        id: 13,
-        projectId: "69823eaf8914fa0818cfff97",
-        name: "Stock Trading",
-        date: "27 Feb",
-        venue: "TnP",
-        prizes: "Rs. 3,000",
-        participants: 60,
-        remarks: "Paper trading simulation"
+        id: 7,
+        projectId: "69823eaf8914fa0818cfff91",
+        name: "EarthWear - Coming Soon",
+        date: "25 Feb",
+        venue: "Amphi Theatre",
+        remarks: "WIE Day celebration event"
     }
 ];
