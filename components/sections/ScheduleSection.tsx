@@ -12,40 +12,40 @@ const scheduleData = [
         day: "Day 1",
         date: "23 Feb",
         events: [
-            { name: "Inauguration", venue: "E-Block", prize: "Lamp Lighting", icon: "sparkles" },
-            { name: "Locked In Hackathon", venue: "AIC/TnP", prize: "Rs. 12,000", icon: "code" },
-            { name: "Podcast", venue: "E-Block", prize: "Rs. 4,000", icon: "mic" },
+            { name: "Inauguration Day", venue: "E-Block", prize: "Lamp Lighting", icon: "sparkles" },
+            { name: "Treasure Hunt", venue: "TnP Room", prize: "Rs. 2,000", icon: "map" },
+            { name: "Designathon", venue: "TnP Room", prize: "Rs. 3,000", icon: "pen-tool" },
+            { name: "Gaming Event", venue: "TnP Room", prize: "Rs. 3,000", icon: "gamepad" },
         ]
     },
     {
         day: "Day 2",
         date: "24 Feb",
         events: [
-            { name: "Designathon", venue: "AIC/TnP", prize: "Rs. 3,000", icon: "pen-tool" },
-            { name: "Gaming Event", venue: "AIC", prize: "Rs. 3,000", icon: "gamepad" },
+            { name: "IPL Auction", venue: "E-Block", prize: "Rs. 3,000", icon: "gavel" },
         ]
     },
     {
         day: "Day 3",
         date: "25 Feb",
         events: [
-            { name: "EarthWear - Coming Soon", venue: "Amphi Theatre", prize: "Coming Soon", icon: "leaf" },
-            { name: "FrameSync", venue: "College Campus", prize: "Rs. 5,000", icon: "camera" },
-            { name: "Spin the Wheel", venue: "Amphi Theatre", prize: "Rs. 8,000", icon: "rotate-cw" },
+            { name: "Podcast", venue: "E-Block", prize: "Rs. 4,000", icon: "mic" },
+            { name: "FrameSync", venue: "E-Block", prize: "Rs. 5,000", icon: "camera" },
+            { name: "Spin the Wheel", venue: "E-Block", prize: "Rs. 8,000", icon: "rotate-cw" },
         ]
     },
     {
         day: "Day 4",
         date: "26 Feb",
         events: [
-            { name: "IPL Auction", venue: "E-Block", prize: "Rs. 3,000", icon: "gavel" },
+            { name: "Locked In Hackathon", venue: "AIC", prize: "Rs. 12,000", icon: "code" },
         ]
     },
     {
         day: "Day 5",
         date: "27 Feb",
         events: [
-            { name: "Treasure Hunt", venue: "TnP", prize: "Rs. 2,000", icon: "map" },
+            { name: "Closing Ceremony", venue: "E-Block", prize: "Certificates", icon: "award" },
         ]
     }
 ];

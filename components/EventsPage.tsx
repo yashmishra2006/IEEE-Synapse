@@ -61,8 +61,8 @@ const EventsPage: React.FC = () => {
         const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             event.remarks.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesDay = selectedDay === 'All' || event.date === selectedDay;
-        const isNotInauguration = event.id !== 1;
-        return matchesSearch && matchesDay && isNotInauguration;
+        // Show all events including Inauguration and Closing Ceremony
+        return matchesSearch && matchesDay;
     });
 
     const days = ['All', '23 Feb', '24 Feb', '25 Feb', '26 Feb', '27 Feb'];
@@ -342,6 +342,17 @@ const EventsPage: React.FC = () => {
                                                         >
                                                             <CheckCircle2 className="h-4 w-4" />
                                                             Registered
+                                                        </button>
+                                                    );
+                                                }
+
+                                                if (event.id === 1 || event.id === 10) {
+                                                    return (
+                                                        <button
+                                                            disabled
+                                                            className="mt-8 w-full py-4 rounded-2xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-2 bg-white/5 text-white/20 border border-white/5 cursor-default"
+                                                        >
+                                                            No Registration Required
                                                         </button>
                                                     );
                                                 }
